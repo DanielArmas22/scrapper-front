@@ -15,8 +15,36 @@ const MilanunciosSearchForm = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Preparar los parámetros fijos si son necesarios para Milanuncios
+    const fixedParams = {
+      // Añadir aquí parámetros fijos específicos para Milanuncios, si existen
+    };
+
+    // Combinar con los parámetros del formulario
+    const allParams = {
+      ...fixedParams,
+      ...formData
+      // Quitamos el type de aquí, ya que se enviará como un campo separado
+    };
+
+    // Construir la cadena de consulta URL
+    const queryParams = Object.entries(allParams)
+      .filter(
+        ([_, value]) => value !== null && value !== undefined && value !== ""
+      )
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+      )
+      .join("&");
+
+    // Añadir el signo de interrogación al inicio
+    const queryString = `?${queryParams}`;
+
+    // Enviar al componente padre
     onSubmit({
-      ...formData,
+      query: queryString,
       type: isDeepSearch ? "deep" : "fast",
     });
   };

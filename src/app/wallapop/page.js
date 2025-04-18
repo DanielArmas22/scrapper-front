@@ -22,6 +22,7 @@ export default function WallapopPage() {
     setResults(null);
 
     try {
+      // Utilizamos directamente la cadena de consulta
       const data = await searchWallapop(formData);
       setResults(data);
     } catch (err) {

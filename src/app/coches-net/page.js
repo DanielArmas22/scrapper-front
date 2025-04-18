@@ -22,6 +22,7 @@ export default function CochesNetPage() {
     setResults(null);
 
     try {
+      // Utilizamos directamente la cadena de consulta
       const data = await searchCochesNet(formData);
       setResults(data);
     } catch (err) {

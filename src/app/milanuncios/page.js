@@ -22,6 +22,7 @@ export default function MilanunciosPage() {
     setResults(null);
 
     try {
+      // Utilizamos directamente la cadena de consulta
       const data = await searchMilanuncios(formData);
       setResults(data);
     } catch (err) {

@@ -99,16 +99,14 @@ export const sendCochesNetChatMessage = async (message, type = 'fast') => {
 
 const sendChatMessage = async (platform, message, type = 'fast') => {
   try {
-    // Enviamos el mensaje como parámetro de consulta y el tipo como campo separado
-    const queryParams = `?message=${encodeURIComponent(message)}`;
-
+    // Enviamos el mensaje directamente en el cuerpo de la solicitud
     const response = await fetch(`${API_URL}/chat/${platform}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        query: queryParams,
+        message: message,
         type: type
       }),
     });

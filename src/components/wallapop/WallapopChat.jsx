@@ -73,16 +73,16 @@ export default function WallapopChat() {
             <p>Puedes preguntarme cosas como:</p>
             <ul className="text-left max-w-md mx-auto mt-2">
               <li className="py-1">
-                • "¿Qué marcas de coches son más fiables?"
+                • "Busca coches diésel de menos de 10000€"
               </li>
               <li className="py-1">
-                • "Busca coches de menos de 5000€ en Madrid"
+                • "Necesito un SUV automático con menos de 5 años"
               </li>
               <li className="py-1">
-                • "¿Cuáles son los mejores coches familiares?"
+                • "Muéstrame Seat Ibiza con garantía y menos de 100000 km"
               </li>
               <li className="py-1">
-                • "¿Qué debo revisar antes de comprar un coche de segunda mano?"
+                • "Quiero ver coches familiares con más de 150 caballos"
               </li>
             </ul>
           </div>

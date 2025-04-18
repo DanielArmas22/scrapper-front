@@ -9,13 +9,37 @@ const SearchForm = ({ onSubmit }) => {
   const [isDeepSearch, setIsDeepSearch] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked, selectedOptions } = e.target;
 
     if (type === "checkbox") {
       setFormData((prevData) => ({
         ...prevData,
         [name]: checked ? "true" : null,
       }));
+    } else if (type === "select-multiple") {
+      // Capturar múltiples valores seleccionados
+      const selectedValues = Array.from(selectedOptions).map(
+        (option) => option.value
+      );
+
+      // Si no hay selecciones o solo está seleccionado "Cualquiera" (valor vacío)
+      if (
+        selectedValues.length === 0 ||
+        (selectedValues.length === 1 && selectedValues[0] === "")
+      ) {
+        const newFormData = { ...formData };
+        delete newFormData[name];
+        setFormData(newFormData);
+      } else {
+        // Filtrar el valor vacío si hay otras selecciones
+        const filteredValues = selectedValues.filter((val) => val !== "");
+
+        // Unir los valores con comas para el formato correcto de la URL
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: filteredValues.join(","),
+        }));
+      }
     } else {
       if (value === "") {
         const newFormData = { ...formData };
@@ -78,11 +102,6 @@ const SearchForm = ({ onSubmit }) => {
       </div>
       <div className="p-4">
         <form id="searchForm" onSubmit={handleSubmit}>
-          <SearchTypeToggle
-            isDeepSearch={isDeepSearch}
-            onChange={() => setIsDeepSearch(!isDeepSearch)}
-          />
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>
               <label
@@ -137,7 +156,10 @@ const SearchForm = ({ onSubmit }) => {
           <CarDetails onChange={handleChange} />
           <YearPriceRange onChange={handleChange} />
           <AdditionalSpecs onChange={handleChange} />
-
+          <SearchTypeToggle
+            isDeepSearch={isDeepSearch}
+            onChange={() => setIsDeepSearch(!isDeepSearch)}
+          />
           <div className="text-center mt-6">
             <button
               type="submit"

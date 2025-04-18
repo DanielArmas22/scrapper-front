@@ -44,7 +44,7 @@ const SearchForm = ({ onSubmit }) => {
     // Combinar con los parámetros del formulario
     const allParams = {
       ...fixedParams,
-      ...formData
+      ...formData,
       // Quitamos el type de aquí, ya que se enviará como un campo separado
     };
 

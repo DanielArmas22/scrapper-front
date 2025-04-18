@@ -101,13 +101,13 @@ const sendChatMessage = async (platform, message, type = 'fast') => {
   try {
     // Enviamos el mensaje como parámetro de consulta y el tipo como campo separado
     const queryParams = `?message=${encodeURIComponent(message)}`;
-    
+
     const response = await fetch(`${API_URL}/chat/${platform}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         query: queryParams,
         type: type
       }),
@@ -116,15 +116,15 @@ const sendChatMessage = async (platform, message, type = 'fast') => {
     if (!response.ok) {
       throw new Error(`Error en la comunicación con el chat de ${platform}`);
     }
-    
+
     // Verificar el tipo de contenido de la respuesta
     const contentType = response.headers.get('content-type');
-    
+
     // Si la respuesta no es JSON o está vacía, devolver un objeto predeterminado
     if (!contentType || !contentType.includes('application/json') || response.status === 204) {
       return { success: true, message: "Solicitud procesada correctamente" };
     }
-    
+
     // Si hay contenido JSON, procesarlo normalmente
     return await response.json();
   } catch (error) {

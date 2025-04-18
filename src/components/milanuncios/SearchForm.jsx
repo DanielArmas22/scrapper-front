@@ -1,34 +1,14 @@
 import { useState } from "react";
-import CarDetails from "@/components/form-sections/CardDetails";
-import YearPriceRange from "@/components/form-sections/YearPriceRange";
-import AdditionalSpecs from "@/components/form-sections/AdditionalSpecs";
 
-const SearchForm = ({ onSubmit }) => {
+const MilanunciosSearchForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({});
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    // Handle checkbox differently
-    if (type === "checkbox") {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: checked ? "true" : null,
-      }));
-    } else {
-      // Only update if the field has a value
-      if (value === "") {
-        // Remove the property if it's empty
-        const newFormData = { ...formData };
-        delete newFormData[name];
-        setFormData(newFormData);
-      } else {
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
-        }));
-      }
-    }
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -39,19 +19,13 @@ const SearchForm = ({ onSubmit }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
       <div className="bg-gray-100 px-4 py-3 border-b">
-        <h5 className="text-lg font-semibold text-gray-700">
-          Search Parameters
-        </h5>
+        <h5 className="text-lg font-semibold text-gray-700">Milanuncios Search</h5>
       </div>
       <div className="p-4">
-        <form id="searchForm" onSubmit={handleSubmit}>
-          {/* Basic search fields */}
+        <form id="milanunciosSearchForm" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>
-              <label
-                htmlFor="keywords"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="keywords" className="block text-sm font-medium text-gray-700 mb-1">
                 Keywords
               </label>
               <input
@@ -64,10 +38,7 @@ const SearchForm = ({ onSubmit }) => {
               />
             </div>
             <div>
-              <label
-                htmlFor="brand"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-1">
                 Brand
               </label>
               <input
@@ -80,10 +51,7 @@ const SearchForm = ({ onSubmit }) => {
               />
             </div>
             <div>
-              <label
-                htmlFor="model"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="model" className="block text-sm font-medium text-gray-700 mb-1">
                 Model
               </label>
               <input
@@ -97,14 +65,7 @@ const SearchForm = ({ onSubmit }) => {
             </div>
           </div>
 
-          {/* Car Details Section */}
-          <CarDetails onChange={handleChange} />
-
-          {/* Year & Price Range Section */}
-          <YearPriceRange onChange={handleChange} />
-
-          {/* Additional Specifications Section */}
-          <AdditionalSpecs onChange={handleChange} />
+          {/* Additional form sections can be added here */}
 
           <div className="text-center mt-6">
             <button
@@ -120,4 +81,4 @@ const SearchForm = ({ onSubmit }) => {
   );
 };
 
-export default SearchForm;
+export default MilanunciosSearchForm;

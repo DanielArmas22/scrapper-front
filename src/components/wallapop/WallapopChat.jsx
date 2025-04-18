@@ -2,11 +2,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { sendWallapopChatMessage } from "@/services/api";
 import Loader from "@/components/common/Loader";
+import SearchTypeToggle from "@/components/common/SearchTypeToggle";
 
 export default function WallapopChat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isDeepSearch, setIsDeepSearch] = useState(false);
   const messagesEndRef = useRef(null);
 
   // Scroll al último mensaje cuando se añaden nuevos mensajes
@@ -30,11 +32,14 @@ export default function WallapopChat() {
 
     try {
       // Enviamos el mensaje y obtenemos la respuesta
-      const response = await sendWallapopChatMessage(newMessage);
-
+      const response = await sendWallapopChatMessage(
+        newMessage,
+        isDeepSearch ? "deep" : "fast"
+      );
+      console.log("Respuesta del asistente:", response);
       // Añadimos la respuesta del asistente
-      const assistantMessage = { type: "assistant", text: response.message };
-      setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+      // const assistantMessage = { type: "assistant", text: response.message };
+      // setMessages((prevMessages) => [...prevMessages, assistantMessage]);
     } catch (error) {
       console.error("Error en el chat:", error);
       // Añadimos mensaje de error
@@ -133,6 +138,12 @@ export default function WallapopChat() {
         onSubmit={handleSubmit}
         className="border-t border-gray-300 p-4 bg-white"
       >
+        <div className="mb-3">
+          <SearchTypeToggle
+            isDeepSearch={isDeepSearch}
+            onChange={() => setIsDeepSearch(!isDeepSearch)}
+          />
+        </div>
         <div className="flex">
           <input
             type="text"

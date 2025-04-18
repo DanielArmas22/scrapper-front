@@ -2,9 +2,11 @@ import { useState } from "react";
 import CarDetails from "@/components/wallapop/form-sections/CarDetails";
 import YearPriceRange from "@/components/wallapop/form-sections/YearPriceRange";
 import AdditionalSpecs from "@/components/wallapop/form-sections/AdditionalSpecs";
+import SearchTypeToggle from "@/components/common/SearchTypeToggle";
 
 const SearchForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({});
+  const [isDeepSearch, setIsDeepSearch] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -30,7 +32,10 @@ const SearchForm = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    onSubmit({
+      ...formData,
+      type: isDeepSearch ? "deep" : "fast",
+    });
   };
 
   return (
@@ -42,6 +47,11 @@ const SearchForm = ({ onSubmit }) => {
       </div>
       <div className="p-4">
         <form id="searchForm" onSubmit={handleSubmit}>
+          <SearchTypeToggle
+            isDeepSearch={isDeepSearch}
+            onChange={() => setIsDeepSearch(!isDeepSearch)}
+          />
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>
               <label

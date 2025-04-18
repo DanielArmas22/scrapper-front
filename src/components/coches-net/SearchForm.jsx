@@ -1,7 +1,9 @@
 import { useState } from "react";
+import SearchTypeToggle from "@/components/common/SearchTypeToggle";
 
 const SearchForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({});
+  const [isDeepSearch, setIsDeepSearch] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -13,19 +15,32 @@ const SearchForm = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    onSubmit({
+      ...formData,
+      type: isDeepSearch ? "deep" : "fast",
+    });
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
       <div className="bg-gray-100 px-4 py-3 border-b">
-        <h5 className="text-lg font-semibold text-gray-700">Search Parameters</h5>
+        <h5 className="text-lg font-semibold text-gray-700">
+          Search Parameters
+        </h5>
       </div>
       <div className="p-4">
         <form id="searchForm" onSubmit={handleSubmit}>
+          <SearchTypeToggle
+            isDeepSearch={isDeepSearch}
+            onChange={() => setIsDeepSearch(!isDeepSearch)}
+          />
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>
-              <label htmlFor="keywords" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="keywords"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Keywords
               </label>
               <input
@@ -38,7 +53,10 @@ const SearchForm = ({ onSubmit }) => {
               />
             </div>
             <div>
-              <label htmlFor="brand" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="brand"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Brand
               </label>
               <input
@@ -51,7 +69,10 @@ const SearchForm = ({ onSubmit }) => {
               />
             </div>
             <div>
-              <label htmlFor="model" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="model"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Model
               </label>
               <input

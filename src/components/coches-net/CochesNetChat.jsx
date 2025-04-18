@@ -1,11 +1,13 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { sendCochesNetChatMessage } from "@/services/api";
+import SearchTypeToggle from "@/components/common/SearchTypeToggle";
 
 export default function CochesNetChat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isDeepSearch, setIsDeepSearch] = useState(false);
   const messagesEndRef = useRef(null);
 
   // Scroll al último mensaje cuando se añaden nuevos mensajes
@@ -29,7 +31,10 @@ export default function CochesNetChat() {
 
     try {
       // Enviamos el mensaje y obtenemos la respuesta
-      const response = await sendCochesNetChatMessage(newMessage);
+      const response = await sendCochesNetChatMessage(
+        newMessage,
+        isDeepSearch ? "deep" : "fast"
+      );
 
       // Añadimos la respuesta del asistente
       const assistantMessage = { type: "assistant", text: response.message };
@@ -128,6 +133,12 @@ export default function CochesNetChat() {
         onSubmit={handleSubmit}
         className="border-t border-gray-300 p-4 bg-white"
       >
+        <div className="mb-3">
+          <SearchTypeToggle
+            isDeepSearch={isDeepSearch}
+            onChange={() => setIsDeepSearch(!isDeepSearch)}
+          />
+        </div>
         <div className="flex">
           <input
             type="text"

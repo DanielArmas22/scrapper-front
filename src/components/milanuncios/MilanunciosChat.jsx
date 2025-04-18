@@ -1,11 +1,13 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { sendMilanunciosChatMessage } from "@/services/api";
+import SearchTypeToggle from "@/components/common/SearchTypeToggle";
 
 export default function MilanunciosChat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isDeepSearch, setIsDeepSearch] = useState(false);
   const messagesEndRef = useRef(null);
 
   // Scroll al último mensaje cuando se añaden nuevos mensajes
@@ -29,7 +31,10 @@ export default function MilanunciosChat() {
 
     try {
       // Enviamos el mensaje y obtenemos la respuesta
-      const response = await sendMilanunciosChatMessage(newMessage);
+      const response = await sendMilanunciosChatMessage(
+        newMessage,
+        isDeepSearch ? "deep" : "fast"
+      );
 
       // Añadimos la respuesta del asistente
       const assistantMessage = { type: "assistant", text: response.message };
@@ -133,6 +138,12 @@ export default function MilanunciosChat() {
         onSubmit={handleSubmit}
         className="border-t border-gray-300 p-4 bg-white"
       >
+        <div className="mb-3">
+          <SearchTypeToggle
+            isDeepSearch={isDeepSearch}
+            onChange={() => setIsDeepSearch(!isDeepSearch)}
+          />
+        </div>
         <div className="flex">
           <input
             type="text"

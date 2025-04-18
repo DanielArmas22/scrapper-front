@@ -38,8 +38,8 @@ export default function WallapopChat() {
       );
       console.log("Respuesta del asistente:", response);
       // Añadimos la respuesta del asistente
-      // const assistantMessage = { type: "assistant", text: response.message };
-      // setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+      const assistantMessage = { type: "assistant", text: response.message };
+      setMessages((prevMessages) => [...prevMessages, assistantMessage]);
     } catch (error) {
       console.error("Error en el chat:", error);
       // Añadimos mensaje de error

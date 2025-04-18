@@ -114,7 +114,7 @@ const sendChatMessage = async (platform, message, type = 'fast') => {
     if (!response.ok) {
       throw new Error(`Error en la comunicación con el chat de ${platform}`);
     }
-
+    console.log('Respuesta del chat:', response);
     // Verificar el tipo de contenido de la respuesta
     const contentType = response.headers.get('content-type');
 

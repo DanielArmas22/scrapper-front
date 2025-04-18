@@ -20,7 +20,16 @@ export const searchWallapop = async (params) => {
     if (!response.ok) {
       throw new Error('Error en la búsqueda de Wallapop');
     }
+    
+    // Verificar el tipo de contenido de la respuesta
+    const contentType = response.headers.get('content-type');
 
+    // Si la respuesta no es JSON o está vacía, devolver un objeto predeterminado
+    if (!contentType || !contentType.includes('application/json') || response.status === 204) {
+      return { success: true, message: "Solicitud procesada correctamente" };
+    }
+
+    // Si hay contenido JSON, procesarlo normalmente
     return await response.json();
   } catch (error) {
     console.error('Error buscando en Wallapop:', error);
@@ -48,7 +57,16 @@ export const searchMilanuncios = async (params) => {
     if (!response.ok) {
       throw new Error('Error en la búsqueda de Milanuncios');
     }
+    
+    // Verificar el tipo de contenido de la respuesta
+    const contentType = response.headers.get('content-type');
 
+    // Si la respuesta no es JSON o está vacía, devolver un objeto predeterminado
+    if (!contentType || !contentType.includes('application/json') || response.status === 204) {
+      return { success: true, message: "Solicitud procesada correctamente" };
+    }
+
+    // Si hay contenido JSON, procesarlo normalmente
     return await response.json();
   } catch (error) {
     console.error('Error buscando en Milanuncios:', error);
@@ -76,7 +94,16 @@ export const searchCochesNet = async (params) => {
     if (!response.ok) {
       throw new Error('Error en la búsqueda de Coches.net');
     }
+    
+    // Verificar el tipo de contenido de la respuesta
+    const contentType = response.headers.get('content-type');
 
+    // Si la respuesta no es JSON o está vacía, devolver un objeto predeterminado
+    if (!contentType || !contentType.includes('application/json') || response.status === 204) {
+      return { success: true, message: "Solicitud procesada correctamente" };
+    }
+
+    // Si hay contenido JSON, procesarlo normalmente
     return await response.json();
   } catch (error) {
     console.error('Error buscando en Coches.net:', error);

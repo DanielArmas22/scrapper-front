@@ -2,6 +2,7 @@ import { useState } from "react";
 import CarDetails from "@/components/wallapop/form-sections/CarDetails";
 import YearPriceRange from "@/components/wallapop/form-sections/YearPriceRange";
 import AdditionalSpecs from "@/components/wallapop/form-sections/AdditionalSpecs";
+import SortOptions from "@/components/wallapop/form-sections/SortOptions";
 import SearchTypeToggle from "@/components/common/SearchTypeToggle";
 
 const SearchForm = ({ onSubmit }) => {
@@ -62,7 +63,7 @@ const SearchForm = ({ onSubmit }) => {
       category_ids: 100,
       latitude: 40.41956,
       longitude: -3.69196,
-      filters_source: "search_box",
+      filters_source: "deep_link",
     };
 
     // Combinar con los parámetros del formulario
@@ -156,6 +157,7 @@ const SearchForm = ({ onSubmit }) => {
           <CarDetails onChange={handleChange} />
           <YearPriceRange onChange={handleChange} />
           <AdditionalSpecs onChange={handleChange} />
+          <SortOptions onChange={handleChange} />
           <SearchTypeToggle
             isDeepSearch={isDeepSearch}
             onChange={() => setIsDeepSearch(!isDeepSearch)}

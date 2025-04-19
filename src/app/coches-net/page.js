@@ -1,20 +1,19 @@
 // filepath: /buscador-vehiculos/buscador-vehiculos/src/app/coches-net/page.js
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import SearchForm from "@/components/coches-net/SearchForm";
 import CochesNetChat from "@/components/coches-net/CochesNetChat";
-import Loader from "@/components/common/Loader";
+import Loader from "@/components/coches-net/Loader";
 import ErrorMessage from "@/components/common/ErrorMessage";
-import ResultsDisplay from "@/components/common/ResultsDisplay";
+import ResultsDisplay from "@/components/coches-net/ResultsDisplay";
 import TabsNavigation from "@/components/common/TabsNavigation";
-import { searchCochesNet } from "@/services/api";
 
 export default function CochesNetPage() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState("search"); // 'search' or 'chat'
+  const [activeTab, setActiveTab] = useState("search"); // 'search' o 'chat'
 
   const handleSubmit = async (formData) => {
     setLoading(true);
@@ -22,8 +21,23 @@ export default function CochesNetPage() {
     setResults(null);
 
     try {
-      // Utilizamos directamente la cadena de consulta
-      const data = await searchCochesNet(formData);
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:1337';
+
+      // Realizar la petición POST al endpoint del backend
+      const response = await fetch(`${backendUrl}/cochesnet/search`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: formData.query }),
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.error || 'Error al procesar la búsqueda');
+      }
+
       setResults(data);
     } catch (err) {
       setError(err.message || "Ha ocurrido un error al buscar datos");
@@ -39,13 +53,13 @@ export default function CochesNetPage() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto p-4 pt-8">
+    <div className="max-w-6xl mx-auto p-4 pt-8">
       <Link href="/" className="text-blue-500 hover:underline mb-4 inline-block">
         &lt; Volver al inicio
       </Link>
 
       <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
-        Buscador de Coches en Coches.net
+        Buscador de Autocaravanas y Remolques
       </h1>
 
       <TabsNavigation
@@ -54,7 +68,7 @@ export default function CochesNetPage() {
         onChange={setActiveTab}
       />
 
-      {/* Content based on active tab */}
+      {/* Contenido basado en la pestaña activa */}
       {activeTab === "search" ? (
         <>
           <SearchForm onSubmit={handleSubmit} />

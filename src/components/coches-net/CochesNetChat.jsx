@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { sendCochesNetChatMessage } from "@/services/api";
+import { searchCochesNet } from "@/services/api";
 import SearchTypeToggle from "@/components/common/SearchTypeToggle";
 
 export default function CochesNetChat() {
@@ -30,14 +30,21 @@ export default function CochesNetChat() {
     setLoading(true);
 
     try {
-      // Enviamos el mensaje y obtenemos la respuesta
-      const response = await sendCochesNetChatMessage(
-        newMessage,
-        isDeepSearch ? "deep" : "fast"
-      );
+      // Enviamos el mensaje usando searchCochesNet en lugar de sendCochesNetChatMessage
+      const response = await searchCochesNet({
+        query: newMessage,
+        type: isDeepSearch ? "deep" : "fast",
+      });
 
       // Añadimos la respuesta del asistente
-      const assistantMessage = { type: "assistant", text: response.message };
+      const assistantMessage = {
+        type: "assistant",
+        text:
+          response.message ||
+          (response.success
+            ? "Búsqueda completada con éxito"
+            : "Error en la búsqueda"),
+      };
       setMessages((prevMessages) => [...prevMessages, assistantMessage]);
     } catch (error) {
       console.error("Error en el chat:", error);
@@ -71,14 +78,7 @@ export default function CochesNetChat() {
             </p>
             <p>Puedes preguntarme cosas como:</p>
             <ul className="text-left max-w-md mx-auto mt-2">
-              <li className="py-1">• "¿Qué coche híbrido me recomiendas?"</li>
               <li className="py-1">• "Busca SUVs de menos de 30.000€"</li>
-              <li className="py-1">
-                • "¿Cuáles son los modelos con mejor valoración en Coches.net?"
-              </li>
-              <li className="py-1">
-                • "¿Qué ventajas tiene comprar un coche eléctrico en 2025?"
-              </li>
             </ul>
           </div>
         ) : (

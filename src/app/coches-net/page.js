@@ -1,6 +1,6 @@
 // filepath: /buscador-vehiculos/buscador-vehiculos/src/app/coches-net/page.js
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import SearchForm from "@/components/coches-net/SearchForm";
 import CochesNetChat from "@/components/coches-net/CochesNetChat";
@@ -8,6 +8,7 @@ import Loader from "@/components/coches-net/Loader";
 import ErrorMessage from "@/components/common/ErrorMessage";
 import ResultsDisplay from "@/components/coches-net/ResultsDisplay";
 import TabsNavigation from "@/components/common/TabsNavigation";
+import { searchCochesNet } from "@/services/api";
 
 export default function CochesNetPage() {
   const [loading, setLoading] = useState(false);
@@ -21,18 +22,13 @@ export default function CochesNetPage() {
     setResults(null);
 
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:1337';
+      console.log("Datos enviados:", formData.query);
 
-      // Realizar la petición POST al endpoint del backend
-      const response = await fetch(`${backendUrl}/cochesnet/search`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query: formData.query }),
+      // Utilizar la función searchCochesNet del servicio API
+      const data = await searchCochesNet({
+        query: formData.query,
+        type: formData.type || 'fast'
       });
-
-      const data = await response.json();
 
       if (!data.success) {
         throw new Error(data.error || 'Error al procesar la búsqueda');

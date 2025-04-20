@@ -1,4 +1,5 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:1337';
 
 // Funciones para Wallapop
 export const searchWallapop = async (params) => {
@@ -20,7 +21,7 @@ export const searchWallapop = async (params) => {
     if (!response.ok) {
       throw new Error('Error en la búsqueda de Wallapop');
     }
-    
+
     // Verificar el tipo de contenido de la respuesta
     const contentType = response.headers.get('content-type');
 
@@ -57,7 +58,7 @@ export const searchMilanuncios = async (params) => {
     if (!response.ok) {
       throw new Error('Error en la búsqueda de Milanuncios');
     }
-    
+
     // Verificar el tipo de contenido de la respuesta
     const contentType = response.headers.get('content-type');
 
@@ -80,7 +81,7 @@ export const searchCochesNet = async (params) => {
     // Extraemos la cadena de consulta y el tipo de búsqueda
     const { query, type = 'fast' } = params;
 
-    const response = await fetch(`${API_URL}/search/cochesnet`, {
+    const response = await fetch(`${BACKEND_URL}/cochesnet/search`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -94,7 +95,7 @@ export const searchCochesNet = async (params) => {
     if (!response.ok) {
       throw new Error('Error en la búsqueda de Coches.net');
     }
-    
+
     // Verificar el tipo de contenido de la respuesta
     const contentType = response.headers.get('content-type');
 

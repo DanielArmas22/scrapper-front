@@ -10,6 +10,7 @@ const MilanunciosSearchForm = ({ onSubmit }) => {
   const [isDeepSearch, setIsDeepSearch] = useState(false);
   const [showDirectSearch, setShowDirectSearch] = useState(false);
   const [directQuery, setDirectQuery] = useState("");
+  const [step, setStep] = useState(10); // Añadido el estado para la paginación
 
   const handleChange = (e) => {
     const { name, value } = e.target;

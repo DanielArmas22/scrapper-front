@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337';
 
 // Funciones para Wallapop
 export const searchWallapop = async (params) => {
@@ -40,17 +40,21 @@ export const searchWallapop = async (params) => {
 // Funciones para Milanuncios
 export const searchMilanuncios = async (params) => {
   try {
+    // URL del backend local para Milanuncios
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:1337';
+    
     // Extraemos la cadena de consulta y el tipo de búsqueda
-    const { query, type = 'fast' } = params;
+    const { query, type = 'fast', ...otherParams } = params;
 
-    const response = await fetch(`${API_URL}/search/milanuncios`, {
+    const response = await fetch(`${BACKEND_URL}/milanuncios/search`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        query: query,
-        type: type
+        query,
+        type,
+        ...otherParams
       }),
     });
 

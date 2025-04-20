@@ -3,6 +3,7 @@ import SearchTypeToggle from "@/components/common/SearchTypeToggle";
 import CarDetails from "./form-sections/CarDetails";
 import PriceRange from "./form-sections/PriceRange";
 import VehicleSpecs from "./form-sections/VehicleSpecs";
+import PaginationSelector from "../common/PaginationSelector";
 
 const MilanunciosSearchForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({});
@@ -28,7 +29,7 @@ const MilanunciosSearchForm = ({ onSubmit }) => {
     } else if (formData.makeModel) {
       searchTerm = formData.makeModel;
     }
-    
+
     // Verificar que hay al menos un criterio válido de búsqueda
     if (!searchTerm) {
       alert("Por favor, introduce al menos un término de búsqueda");
@@ -37,22 +38,22 @@ const MilanunciosSearchForm = ({ onSubmit }) => {
 
     // Crear un objeto con todos los parámetros de búsqueda según el formato original
     const searchParams = {
-      s: searchTerm,  // Término de búsqueda principal (parámetro 's' en lugar de 'query')
+      s: searchTerm, // Término de búsqueda principal (parámetro 's' en lugar de 'query')
       type: isDeepSearch ? "deep" : "fast",
     };
 
     // Añadir parámetros de rango de precios
     if (formData.desde) searchParams.desde = formData.desde;
     if (formData.hasta) searchParams.hasta = formData.hasta;
-    
+
     // Añadir filtros de tipo de anuncio y vendedor
     if (formData.demanda) searchParams.demanda = formData.demanda;
     if (formData.vendedor) searchParams.vendedor = formData.vendedor;
-    
+
     // Ordenamiento
     if (formData.orden) searchParams.orden = formData.orden;
-    else searchParams.orden = "relevance";  // Orden predeterminado
-    
+    else searchParams.orden = "relevance"; // Orden predeterminado
+
     // Añadir parámetros fijos necesarios según el archivo test.js
     searchParams.fromSearch = "1";
     searchParams.fromSuggester = "1";
@@ -60,13 +61,14 @@ const MilanunciosSearchForm = ({ onSubmit }) => {
     searchParams.hitOrigin = "listing";
     searchParams.recentSearchShowed = "0";
     searchParams.recentSearchUsed = "0";
-    
+
     // Añadir los parámetros adicionales de los que disponemos
     if (formData.year) searchParams.year = formData.year;
     if (formData.kms) searchParams.kms = formData.kms;
     if (formData.color) searchParams.color = formData.color;
     if (formData.fuel) searchParams.fuel = formData.fuel;
-    if (formData.transmission) searchParams.transmission = formData.transmission;
+    if (formData.transmission)
+      searchParams.transmission = formData.transmission;
     if (formData.doors) searchParams.doors = formData.doors;
     if (formData.body) searchParams.body = formData.body;
     if (formData.caract) searchParams.caract = formData.caract;
@@ -151,7 +153,7 @@ const MilanunciosSearchForm = ({ onSubmit }) => {
 
           {/* Componente para especificaciones técnicas */}
           <VehicleSpecs onChange={handleChange} />
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <label
@@ -249,7 +251,8 @@ const MilanunciosSearchForm = ({ onSubmit }) => {
               </button>
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              Ejemplo: https://www.milanuncios.com/motor/?s=hyundai+negro&desde=1010&hasta=20200&orden=relevance
+              Ejemplo:
+              https://www.milanuncios.com/motor/?s=hyundai+negro&desde=1010&hasta=20200&orden=relevance
             </p>
           </div>
         )}

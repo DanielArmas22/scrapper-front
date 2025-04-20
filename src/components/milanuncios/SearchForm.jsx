@@ -1,9 +1,11 @@
 import { useState } from "react";
 import SearchTypeToggle from "@/components/common/SearchTypeToggle";
+import PaginationSelector from "@/components/common/PaginationSelector";
 
 const MilanunciosSearchForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({});
   const [isDeepSearch, setIsDeepSearch] = useState(false);
+  const [step, setStep] = useState(1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,6 +48,7 @@ const MilanunciosSearchForm = ({ onSubmit }) => {
     onSubmit({
       query: queryString,
       type: isDeepSearch ? "deep" : "fast",
+      step: step,
     });
   };
 
@@ -58,10 +61,13 @@ const MilanunciosSearchForm = ({ onSubmit }) => {
       </div>
       <div className="p-4">
         <form id="milanunciosSearchForm" onSubmit={handleSubmit}>
-          <SearchTypeToggle
-            isDeepSearch={isDeepSearch}
-            onChange={() => setIsDeepSearch(!isDeepSearch)}
-          />
+          <div className="flex justify-between items-start mb-4">
+            <PaginationSelector step={step} onChange={setStep} />
+            <SearchTypeToggle
+              isDeepSearch={isDeepSearch}
+              onChange={() => setIsDeepSearch(!isDeepSearch)}
+            />
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>

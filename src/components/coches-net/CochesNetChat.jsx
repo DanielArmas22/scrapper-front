@@ -2,12 +2,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { searchCochesNet } from "@/services/api";
 import SearchTypeToggle from "@/components/common/SearchTypeToggle";
+import PaginationSelector from "@/components/common/PaginationSelector";
 
 export default function CochesNetChat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [isDeepSearch, setIsDeepSearch] = useState(false);
+  const [step, setStep] = useState(1);
   const messagesEndRef = useRef(null);
 
   // Scroll al último mensaje cuando se añaden nuevos mensajes
@@ -34,6 +36,7 @@ export default function CochesNetChat() {
       const response = await searchCochesNet({
         query: newMessage,
         type: isDeepSearch ? "deep" : "fast",
+        step: step,
       });
 
       // Añadimos la respuesta del asistente
@@ -133,7 +136,8 @@ export default function CochesNetChat() {
         onSubmit={handleSubmit}
         className="border-t border-gray-300 p-4 bg-white"
       >
-        <div className="mb-3">
+        <div className="flex justify-between items-center mb-3">
+          <PaginationSelector step={step} onChange={setStep} />
           <SearchTypeToggle
             isDeepSearch={isDeepSearch}
             onChange={() => setIsDeepSearch(!isDeepSearch)}

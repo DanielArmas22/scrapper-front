@@ -4,8 +4,8 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:133
 // Funciones para Wallapop
 export const searchWallapop = async (params) => {
   try {
-    // Extraemos la cadena de consulta y el tipo de búsqueda
-    const { query, type = 'fast' } = params;
+    // Extraemos la cadena de consulta, el tipo de búsqueda y la paginación
+    const { query, type = 'fast', step = 1 } = params;
 
     const response = await fetch(`${API_URL}/search/wallapop`, {
       method: 'POST',
@@ -14,7 +14,8 @@ export const searchWallapop = async (params) => {
       },
       body: JSON.stringify({
         query: query,
-        type: type
+        type: type,
+        step: step
       }),
     });
 
@@ -41,8 +42,8 @@ export const searchWallapop = async (params) => {
 // Funciones para Milanuncios
 export const searchMilanuncios = async (params) => {
   try {
-    // Extraemos la cadena de consulta y el tipo de búsqueda
-    const { query, type = 'fast' } = params;
+    // Extraemos la cadena de consulta, el tipo de búsqueda y la paginación
+    const { query, type = 'fast', step = 1 } = params;
 
     const response = await fetch(`${API_URL}/search/milanuncios`, {
       method: 'POST',
@@ -51,7 +52,8 @@ export const searchMilanuncios = async (params) => {
       },
       body: JSON.stringify({
         query: query,
-        type: type
+        type: type,
+        step: step
       }),
     });
 
@@ -78,8 +80,8 @@ export const searchMilanuncios = async (params) => {
 // Funciones para Coches.net
 export const searchCochesNet = async (params) => {
   try {
-    // Extraemos la cadena de consulta y el tipo de búsqueda
-    const { query, type = 'fast' } = params;
+    // Extraemos la cadena de consulta, el tipo de búsqueda y la paginación
+    const { query, type = 'fast', step = 1 } = params;
 
     const response = await fetch(`${BACKEND_URL}/cochesnet/search`, {
       method: 'POST',
@@ -88,7 +90,8 @@ export const searchCochesNet = async (params) => {
       },
       body: JSON.stringify({
         query: query,
-        type: type
+        type: type,
+        step: step
       }),
     });
 
@@ -113,19 +116,19 @@ export const searchCochesNet = async (params) => {
 };
 
 // Funciones para chats
-export const sendWallapopChatMessage = async (message, type = 'fast') => {
-  return sendChatMessage('wallapop', message, type);
+export const sendWallapopChatMessage = async (message, type = 'fast', step = 1) => {
+  return sendChatMessage('wallapop', message, type, step);
 };
 
-export const sendMilanunciosChatMessage = async (message, type = 'fast') => {
-  return sendChatMessage('milanuncios', message, type);
+export const sendMilanunciosChatMessage = async (message, type = 'fast', step = 1) => {
+  return sendChatMessage('milanuncios', message, type, step);
 };
 
-export const sendCochesNetChatMessage = async (message, type = 'fast') => {
-  return sendChatMessage('cochesnet', message, type);
+export const sendCochesNetChatMessage = async (message, type = 'fast', step = 1) => {
+  return sendChatMessage('cochesnet', message, type, step);
 };
 
-const sendChatMessage = async (platform, message, type = 'fast') => {
+const sendChatMessage = async (platform, message, type = 'fast', step = 1) => {
   try {
     // Enviamos el mensaje directamente en el cuerpo de la solicitud
     const response = await fetch(`${API_URL}/chat/${platform}`, {
@@ -135,7 +138,8 @@ const sendChatMessage = async (platform, message, type = 'fast') => {
       },
       body: JSON.stringify({
         message: message,
-        type: type
+        type: type,
+        step: step
       }),
     });
 

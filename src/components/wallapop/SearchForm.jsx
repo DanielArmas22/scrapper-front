@@ -4,10 +4,12 @@ import YearPriceRange from "@/components/wallapop/form-sections/YearPriceRange";
 import AdditionalSpecs from "@/components/wallapop/form-sections/AdditionalSpecs";
 import SortOptions from "@/components/wallapop/form-sections/SortOptions";
 import SearchTypeToggle from "@/components/common/SearchTypeToggle";
+import PaginationSelector from "@/components/common/PaginationSelector";
 
 const SearchForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({});
   const [isDeepSearch, setIsDeepSearch] = useState(false);
+  const [step, setStep] = useState(1);
 
   const handleChange = (e) => {
     const { name, value, type, checked, selectedOptions } = e.target;
@@ -70,7 +72,6 @@ const SearchForm = ({ onSubmit }) => {
     const allParams = {
       ...fixedParams,
       ...formData,
-      // Quitamos el type de aquí, ya que se enviará como un campo separado
     };
 
     // Construir la cadena de consulta URL
@@ -91,6 +92,7 @@ const SearchForm = ({ onSubmit }) => {
     onSubmit({
       query: queryString,
       type: isDeepSearch ? "deep" : "fast",
+      step: step,
     });
   };
 
@@ -103,6 +105,13 @@ const SearchForm = ({ onSubmit }) => {
       </div>
       <div className="p-4">
         <form id="searchForm" onSubmit={handleSubmit}>
+          <div className="flex justify-between items-start mb-4">
+            <PaginationSelector step={step} onChange={setStep} />
+            <SearchTypeToggle
+              isDeepSearch={isDeepSearch}
+              onChange={() => setIsDeepSearch(!isDeepSearch)}
+            />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>
               <label
@@ -158,10 +167,7 @@ const SearchForm = ({ onSubmit }) => {
           <YearPriceRange onChange={handleChange} />
           <AdditionalSpecs onChange={handleChange} />
           <SortOptions onChange={handleChange} />
-          <SearchTypeToggle
-            isDeepSearch={isDeepSearch}
-            onChange={() => setIsDeepSearch(!isDeepSearch)}
-          />
+
           <div className="text-center mt-6">
             <button
               type="submit"

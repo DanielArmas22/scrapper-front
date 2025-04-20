@@ -2,12 +2,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { sendMilanunciosChatMessage } from "@/services/api";
 import SearchTypeToggle from "@/components/common/SearchTypeToggle";
+import PaginationSelector from "@/components/common/PaginationSelector";
 
 export default function MilanunciosChat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [isDeepSearch, setIsDeepSearch] = useState(false);
+  const [step, setStep] = useState(1);
   const messagesEndRef = useRef(null);
 
   // Scroll al último mensaje cuando se añaden nuevos mensajes
@@ -33,7 +35,8 @@ export default function MilanunciosChat() {
       // Enviamos el mensaje y obtenemos la respuesta
       const response = await sendMilanunciosChatMessage(
         newMessage,
-        isDeepSearch ? "deep" : "fast"
+        isDeepSearch ? "deep" : "fast",
+        step
       );
 
       // Añadimos la respuesta del asistente
@@ -138,7 +141,8 @@ export default function MilanunciosChat() {
         onSubmit={handleSubmit}
         className="border-t border-gray-300 p-4 bg-white"
       >
-        <div className="mb-3">
+        <div className="flex justify-between items-center mb-3">
+          <PaginationSelector step={step} onChange={setStep} />
           <SearchTypeToggle
             isDeepSearch={isDeepSearch}
             onChange={() => setIsDeepSearch(!isDeepSearch)}

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import SearchTypeToggle from "@/components/common/SearchTypeToggle";
+import PaginationSelector from "@/components/common/PaginationSelector";
 
 const SearchForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({});
   const [isDeepSearch, setIsDeepSearch] = useState(false);
   const [showDirectSearch, setShowDirectSearch] = useState(false);
   const [directQuery, setDirectQuery] = useState("");
+  const [step, setStep] = useState(1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,7 +43,11 @@ const SearchForm = ({ onSubmit }) => {
 
     // Si hay una consulta, realizar la búsqueda
     if (query.trim()) {
-      onSubmit({ query: query.trim() });
+      onSubmit({
+        query: query.trim(),
+        type: isDeepSearch ? "deep" : "fast",
+        step,
+      });
     } else {
       alert("Por favor, introduce al menos un criterio de búsqueda");
     }
@@ -49,7 +55,11 @@ const SearchForm = ({ onSubmit }) => {
 
   const handleDirectSearch = () => {
     if (directQuery.trim()) {
-      onSubmit({ query: directQuery.trim() });
+      onSubmit({
+        query: directQuery.trim(),
+        type: isDeepSearch ? "deep" : "fast",
+        step,
+      });
     } else {
       alert("Por favor, escribe una consulta de búsqueda");
     }
@@ -62,6 +72,14 @@ const SearchForm = ({ onSubmit }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6 p-6">
       <form id="searchForm" onSubmit={handleSubmit}>
+        <div className="flex justify-between items-start mb-4">
+          <PaginationSelector step={step} onChange={setStep} />
+          <SearchTypeToggle
+            isDeepSearch={isDeepSearch}
+            onChange={() => setIsDeepSearch(!isDeepSearch)}
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
           <div>
             <label

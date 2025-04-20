@@ -97,13 +97,10 @@ const MilanunciosSearchForm = ({ onSubmit }) => {
       </div>
       <div className="p-6">
         <form id="milanunciosSearchForm" onSubmit={handleSubmit}>
-          <div className="flex justify-between items-start mb-4">
-            <PaginationSelector step={step} onChange={setStep} />
-            <SearchTypeToggle
-              isDeepSearch={isDeepSearch}
-              onChange={() => setIsDeepSearch(!isDeepSearch)}
-            />
-          </div>
+          <SearchTypeToggle
+            isDeepSearch={isDeepSearch}
+            onChange={() => setIsDeepSearch(!isDeepSearch)}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>

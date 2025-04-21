@@ -7,6 +7,15 @@ export default function Home() {
 
   const platforms = [
     {
+      name: "Búsqueda Combinada",
+      description: "Busca simultáneamente en todas las plataformas",
+      logo: "/combined-search.svg", // Nuevo icono para la búsqueda combinada
+      path: "/combined-search",
+      bgColor: "bg-purple-100",
+      borderColor: "border-purple-500",
+      featured: true
+    },
+    {
       name: "Wallapop",
       description: "Búsqueda de vehículos en Wallapop",
       logo: "/globe.svg", // Usando un ícono existente, reemplazar con el logo real cuando esté disponible
@@ -32,6 +41,10 @@ export default function Home() {
     }
   ];
 
+  // Separar la búsqueda combinada destacada y las plataformas individuales
+  const featuredPlatform = platforms.find(p => p.featured);
+  const regularPlatforms = platforms.filter(p => !p.featured);
+
   return (
     <div className="max-w-6xl mx-auto p-4 pt-8">
       <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
@@ -42,8 +55,38 @@ export default function Home() {
         Selecciona una plataforma para comenzar tu búsqueda
       </p>
 
+      {/* Opción destacada para búsqueda combinada */}
+      {featuredPlatform && (
+        <div 
+          className={`border-2 ${featuredPlatform.borderColor} rounded-lg ${featuredPlatform.bgColor} p-6 mb-12 cursor-pointer transition-transform hover:scale-105 hover:shadow-xl`}
+          onClick={() => router.push(featuredPlatform.path)}
+        >
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="flex items-center mb-4 md:mb-0">
+              <div className="w-16 h-16 mr-4 relative">
+                <Image
+                  src={featuredPlatform.logo}
+                  alt={`${featuredPlatform.name} logo`}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold">{featuredPlatform.name}</h2>
+                <p className="text-gray-600">{featuredPlatform.description}</p>
+              </div>
+            </div>
+            <button className="px-6 py-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 font-medium transition-colors">
+              Comenzar búsqueda unificada
+            </button>
+          </div>
+        </div>
+      )}
+
+      <h2 className="text-2xl font-semibold mb-6 text-center">O selecciona una plataforma específica</h2>
+
       <div className="grid md:grid-cols-3 gap-8">
-        {platforms.map((platform) => (
+        {regularPlatforms.map((platform) => (
           <div
             key={platform.name}
             className={`border ${platform.borderColor} rounded-lg ${platform.bgColor} p-6 cursor-pointer transition-transform hover:scale-105 hover:shadow-lg`}

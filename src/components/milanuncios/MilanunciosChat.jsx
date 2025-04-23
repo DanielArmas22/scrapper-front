@@ -33,11 +33,11 @@ export default function MilanunciosChat() {
 
     try {
       // Enviamos el mensaje y obtenemos la respuesta
-      const response = await sendMilanunciosChatMessage(
-        newMessage,
-        isDeepSearch ? "deep" : "fast",
-        step
-      );
+      const response = await sendMilanunciosChatMessage({
+        query: newMessage,
+        type: isDeepSearch ? "deep" : "fast",
+        step: step,
+      });
 
       // Añadimos la respuesta del asistente
       const assistantMessage = { type: "assistant", text: response.message };
@@ -72,7 +72,7 @@ export default function MilanunciosChat() {
             <p className="mb-2">
               👋 ¡Hola! Soy tu asistente para buscar coches en Milanuncios.
             </p>
-            <p>Puedes preguntarme cosas como:</p>
+            {/* <p>Puedes preguntarme cosas como:</p>
             <ul className="text-left max-w-md mx-auto mt-2">
               <li className="py-1">
                 • "¿Qué marcas de coches tienen menos averías?"
@@ -87,7 +87,7 @@ export default function MilanunciosChat() {
                 • "¿Cuáles son los trámites para transferir un coche de segunda
                 mano?"
               </li>
-            </ul>
+            </ul> */}
           </div>
         ) : (
           messages.map((message, index) => (
